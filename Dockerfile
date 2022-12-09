@@ -5,6 +5,6 @@ RUN mvn install
 
 FROM openjdk:11
 WORKDIR /app
-COPY --from=build /build/target/Uber.jar  .
+COPY --from=build /build/target/counterApp.jar  .
 EXPOSE 8888
-CMD ["java, "-jar", "Uber.jar"]
+CMD ["java, "-jar", "counterApp.jar"]
