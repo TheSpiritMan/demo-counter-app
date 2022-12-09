@@ -44,7 +44,7 @@ pipeline {
 						[
 							artifactId: 'springboot', 
 							classifier: '', 
-							file: 'target/Uber.jar', 
+							file: 'target/counterApp.jar', 
 							type: 'jar' 
 						]
 					],
@@ -74,6 +74,14 @@ pipeline {
 					sh 'docker login -u ${DH_CRED_USR} -p ${DH_CRED_PSW}'
 					sh 'docker image push thespiritman/$JOB_NAME:v1.$BUILD_ID'
 					sh 'docker image push thespiritman/$JOB_NAME:latest'
+				}
+			}
+		}
+		stage('Remove Old Docker Image'){
+			steps{
+				script{
+					sh 'docker rmi thespiritman/$JOB_NAME:v1.$BUILD_ID -f'
+					sh 'docker rmi thespiritman/$JOB_NAME:latest -f'
 				}
 			}
 		}
