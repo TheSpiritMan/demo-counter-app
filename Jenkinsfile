@@ -71,7 +71,7 @@ pipeline {
 			steps{
 				script{
 					sh 'docker logout'
-					sh 'docker login -u $DH_CRED_USR -p $DH_CRED_PSW'
+					sh 'docker login -u ${DH_CRED_USR} -p ${DH_CRED_PSW}'
 					sh 'docker image push thespiritman/$JOB_NAME:v1.$BUILD_ID'
 					sh 'docker image push thespiritman/$JOB_NAME:latest'
 				}
