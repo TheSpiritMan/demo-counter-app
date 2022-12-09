@@ -85,5 +85,10 @@ pipeline {
 				}
 			}
 		}
+		stage('Deploy Project Container'){
+			steps{
+				sh 'docker run -d -p 8888:8888 --name counterApp:$BUILD_ID $JOB_NAME:v1.$BUILD_ID .'
+			}
+		}
 	} 
 }
