@@ -6,7 +6,7 @@ RUN mvn install
 
 
 #deploy stage
-FROM openjdk:oraclelinux8
+FROM openjdk:17-alpine
 WORKDIR /app
 COPY --from=build /build/target/counterApp.jar  .
 EXPOSE 8888
