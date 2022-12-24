@@ -7,21 +7,25 @@ pipeline {
 		DH_CRED = credentials('DockerHub')
 	}
 	stages {
+		// stage 1
 		stage('Unit Testing') {
 			steps{
 				sh 'mvn test'
 			}
 		}
+		// stage 2
 		stage('Integration Testing'){
 			steps{
 				sh 'mvn verify -DskipUnitTests'
 			}
 		}
+		// stage 3
 		stage('Maven Building'){
 			steps{
 				sh 'mvn clean install'
 			}
 		}
+		// stage 4
 		stage('SonarQube Analysis'){
 			steps{
 				withSonarQubeEnv(credentialsId: 'sonarqube-key', installationName: 'sonarqube-server') {
@@ -29,11 +33,13 @@ pipeline {
 				}
 			}
 		}
+		// stage 5
 		stage('Quality Gate Status'){
 			steps{
 				waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-key'
 			}
 		}
+		// stage 6
 		stage('Upload jar file to Nexus'){
 			steps{
 				script{
@@ -58,6 +64,7 @@ pipeline {
 				}
 			}
 		}
+		// stage 7
 		stage('Docker Image Build'){
 			steps{
 				script{
@@ -67,6 +74,7 @@ pipeline {
 				}
 			}
 		}
+		// stage 8
 		stage('Push Docker Image To DockerHub'){
 			steps{
 				script{
@@ -77,6 +85,7 @@ pipeline {
 				}
 			}
 		}
+		// stage 9
 		stage('Remove Old Docker Image'){
 			steps{
 				script{
@@ -85,6 +94,7 @@ pipeline {
 				}
 			}
 		}
+		// stage 10
 		stage('Deploy Project Container'){
 			steps{
 				script{
