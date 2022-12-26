@@ -85,8 +85,8 @@ pipeline {
 			steps{
 				script{
 					sh 'docker login -u ${DPR_CRED_USR} -p ${DPR_CRED_PSW} 192.168.18.8:8082'
-					sh 'docker image push thespiritman/$JOB_NAME:v1.$BUILD_ID'
-					sh 'docker image push thespiritman/$JOB_NAME:latest'
+					sh 'docker image push 192.168.18.8:8082/$JOB_NAME:v1.$BUILD_ID'
+					sh 'docker image push 192.168.18.8:8082/$JOB_NAME:latest'
 				}
 			}
 		}
