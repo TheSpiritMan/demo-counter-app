@@ -93,17 +93,14 @@ pipeline {
 		// stage 10
 		stage('Remove Old Docker Image'){
 			steps{
-				script{
-					sh 'docker rmi thespiritman/$JOB_NAME:v1.$BUILD_ID -f'
-					sh 'docker rmi thespiritman/$JOB_NAME:latest -f'
-				}
+					sh 'docker rmi $(docker images -q demo-counter-app) --force'
 			}
 		}
 		// stage 11
 		stage('Deploy Project Container'){
 			steps{
 				script{
-					sh 'docker run -d -p 8888:8888 --name counterApp $JOB_NAME:v1.$BUILD_ID .'
+					sh 'docker run -d -p 8888:8888 --name counterApp 192.168.18.8:8082/demo-counter-app:latest'
 				}
 			}
 		}
