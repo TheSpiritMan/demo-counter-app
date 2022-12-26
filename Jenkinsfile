@@ -94,7 +94,7 @@ pipeline {
 		stage('Remove Old Docker Image'){
 			steps{
 				script{
-					sh "docker rmi $(docker images | grep demo-counter-app | awk '{print $3}') --force"
+					sh 'docker rmi $(docker images | grep demo-counter-app | awk '{print $3}') --force'
 			}
 		}
 		// stage 11
