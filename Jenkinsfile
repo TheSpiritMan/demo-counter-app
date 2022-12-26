@@ -95,6 +95,7 @@ pipeline {
 			steps{
 				script{
 					sh 'docker rmi $(docker images | grep demo-counter-app | awk '{print $3}') --force'
+				}
 			}
 		}
 		// stage 11
