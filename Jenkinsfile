@@ -84,7 +84,7 @@ pipeline {
 		stage('Push Docker Image To Private Nexus Repository'){
 			steps{
 				script{
-					sh 'docker login -u ${DPR_CRED_USR} -p ${DPR_CRED_PSW} 192.168.18.8:8081'
+					sh 'docker login -u ${DPR_CRED_USR} -p ${DPR_CRED_PSW} 192.168.18.8:8082'
 					sh 'docker image push thespiritman/$JOB_NAME:v1.$BUILD_ID'
 					sh 'docker image push thespiritman/$JOB_NAME:latest'
 				}
