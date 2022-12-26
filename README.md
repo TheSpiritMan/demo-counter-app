@@ -41,16 +41,19 @@
     - <b>Stage 7:</b>
         - It builds a docker image of the application with the Job_Name and Build_ID. 
         - Remember, <b>Docker</b> must be installed inside Jenkins.
-        - It tagged the image with registry.
     
     - <b>Stage 8: </b>
-        - It pushes the image to the Nexus Private Registry.
-        - It reqires Nexus credentials for that.
+        - It tagged the image with registry.
+
 
     - <b>Stage 9: </b>
-        - It removes old image to clean the space from the jenkins container.
-    
+        - It pushes the image to the Nexus Private Registry.
+        - It reqires Nexus credentials for that.
+   
     - <b>Stage 10: </b>
+        - It removes old image to clean the space from the jenkins container.
+   
+    - <b>Stage 11: </b>
         - Deploy the application from the docker image.
 
 ## <b>Sonarqube: </b>
@@ -58,3 +61,8 @@
 
 ## <b>Nexus: </b>
 - Nexus is used for private repository.
+
+
+
+# Note:
+- If you want to recreate this tutorial, follow the documentation from [Wiki](https://github.com/TheSpiritMan/demo-counter-app/wiki) page.

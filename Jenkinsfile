@@ -4,7 +4,8 @@ pipeline {
 		maven 'MAVEN_HOME'
 	}
 	environment {
-		DH_CRED = credentials('DockerHub')
+		// DPR = Docker Private Repo
+		DPR_CRED = credentials('nexus-creds')
 	}
 	stages {
 		// stage 1
@@ -67,25 +68,29 @@ pipeline {
 		// stage 7
 		stage('Docker Image Build'){
 			steps{
-				script{
 					sh 'docker build -t $JOB_NAME:v1.$BUILD_ID .'
-					sh 'docker image tag $JOB_NAME:v1.$BUILD_ID  thespiritman/$JOB_NAME:v1.$BUILD_ID'
-					sh 'docker image tag $JOB_NAME:v1.$BUILD_ID  thespiritman/$JOB_NAME:latest'
-				}
 			}
 		}
 		// stage 8
-		stage('Push Docker Image To DockerHub'){
+		stage('Tag Image with Nexus Repository'){
 			steps{
 				script{
-					sh 'docker logout'
-					sh 'docker login -u ${DH_CRED_USR} -p ${DH_CRED_PSW}'
+					sh 'docker image tag $JOB_NAME:v1.$BUILD_ID  192.168.18.8:8082/$JOB_NAME:v1.$BUILD_ID'
+					sh 'docker image tag $JOB_NAME:v1.$BUILD_ID  192.168.18.8:8082/$JOB_NAME:latest'
+				}
+			}
+		}
+		// stage 9
+		stage('Push Docker Image To Private Nexus Repository'){
+			steps{
+				script{
+					sh 'docker login -u ${DPR_CRED_USR} -p ${DPR_CRED_PSW} 192.168.18.8:8081'
 					sh 'docker image push thespiritman/$JOB_NAME:v1.$BUILD_ID'
 					sh 'docker image push thespiritman/$JOB_NAME:latest'
 				}
 			}
 		}
-		// stage 9
+		// stage 10
 		stage('Remove Old Docker Image'){
 			steps{
 				script{
@@ -94,11 +99,10 @@ pipeline {
 				}
 			}
 		}
-		// stage 10
+		// stage 11
 		stage('Deploy Project Container'){
 			steps{
 				script{
-					// sh 'docker rm counterApp -f'				
 					sh 'docker run -d -p 8888:8888 --name counterApp $JOB_NAME:v1.$BUILD_ID .'
 				}
 			}
